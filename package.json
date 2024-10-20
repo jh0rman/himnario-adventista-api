@@ -1,15 +1,17 @@
 {
   "name": "himnario-api",
-  "version": "2.0.2",
+  "version": "1.0.0",
+  "private": true,
   "author": "jhormanrus",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jhormanrus/himnario-adventista-api.git"
   },
-  "module": "index.ts",
   "devDependencies": {
-    "@biomejs/biome": "1.7.3",
-    "@types/bun": "latest"
+    "@biomejs/biome": "1.9.4",
+    "@cloudflare/workers-types": "^4.20241022.0",
+    "typescript": "^5.6.3",
+    "wrangler": "^3.83.0"
   },
   "bugs": {
     "url": "https://github.com/jhormanrus/himnario-adventista-api/issues"
@@ -18,12 +20,11 @@
   "homepage": "https://github.com/jhormanrus/himnario-adventista-api#readme",
   "keywords": ["himnario", "adventista", "api"],
   "license": "ISC",
+  "main": "src/index.ts",
   "scripts": {
-    "start": "bun src/index.ts",
-    "lint:fix": "biome check . --apply"
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "cf-typegen": "wrangler types"
   },
-  "type": "module",
-  "dependencies": {
-    "cromo": "^1.0.3"
-  }
+  "type": "module"
 }

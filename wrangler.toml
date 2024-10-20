@@ -1,0 +1,14 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "himnario-api"
+main = "src/index.ts"
+compatibility_date = "2024-10-22"
+compatibility_flags = ["nodejs_compat"]
+send_metrics = false
+
+[observability]
+enabled = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "himnario"
+database_id = "bb8606c2-f38e-4e2d-9bf1-70ee83c3b79c"

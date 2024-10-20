@@ -1,11 +1,13 @@
-import { Cromo } from 'cromo'
-import { cors } from './middleware/cors'
-import { log } from './middleware/log'
 
-const cromo = new Cromo()
+export default {
+	async fetch(_request, env, _ctx): Promise<Response> {
+		// const url = new URL(request.url);
+    // const path = url.pathname;
 
-cromo.setMiddleware([cors, log])
-
-cromo.start(server => {
-  console.info(`➜  Local:   ${server.url}`)
-})
+    const { results } = await env.DB.prepare(
+        "SELECT * FROM hymn"
+      )
+        .all();
+    return Response.json(results);
+	},
+} satisfies ExportedHandler<Env>;
