@@ -1,13 +1,18 @@
 import { cors } from "./cors"
 
 export default {
-	async fetch(request, env, _ctx): Promise<Response> {
+  async fetch(request, env, _ctx): Promise<Response> {
     const url = new URL(request.url)
     const path = url.pathname
 
+    const headers = {
+      ...cors,
+      'Cache-Control': 'public, max-age=31536000, immutable',
+    }
+
     if (path === '/hymn') {
       const { results } = await env.DB.prepare('SELECT id, number, title, mp3Url, mp3UrlInstr, mp3Filename FROM hymn').all()
-      return Response.json(results, { headers: cors })
+      return Response.json(results, { headers })
     } else if (path.startsWith("/hymn/")) {
       const id = path.split('/')[2]
   
@@ -20,7 +25,7 @@ export default {
         .first()
   
       if (!hymn) {
-        return Response.json({ error: 'Hymn not found' }, { status: 404, headers: cors })
+        return Response.json({ error: 'Hymn not found' }, { status: 404, headers })
       }
   
       const { results: verses } = await env.DB.prepare(`
@@ -53,9 +58,9 @@ export default {
         ORDER BY vs.position ASC
       `).bind(id).all()
   
-      return Response.json({ ...hymn, verses, sequence }, { headers: cors })
+      return Response.json({ ...hymn, verses, sequence }, { headers })
     }
 
-    return Response.json({ error: 'Not found' }, { status: 404, headers: cors })
-	},
+    return Response.json({ error: 'Not found' }, { status: 404, headers })
+  },
 } satisfies ExportedHandler<Env>
