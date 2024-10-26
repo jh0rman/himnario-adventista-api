@@ -20,7 +20,6 @@
   "homepage": "https://github.com/jhormanrus/himnario-adventista-api#readme",
   "keywords": ["himnario", "adventista", "api"],
   "license": "ISC",
-  "main": "src/index.ts",
   "scripts": {
     "deploy": "wrangler deploy",
     "dev": "wrangler dev",
