@@ -36,7 +36,7 @@ La música está hosteada en [Google Drive](https://drive.google.com/drive/folde
 
 | Código | Response |
 | --- | --- |
-| ![200](https://img.shields.io/badge/200-00C853?style=for-the-badge) | [HymnHistory](#esquemas) |
+| ![200](https://img.shields.io/badge/200-00C853?style=for-the-badge) | [HymnSequence](#esquemas) |
 | ![404](https://img.shields.io/badge/404-FF1744?style=for-the-badge) | Hymn not found |
 
 ## Esquemas

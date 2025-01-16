@@ -1,12 +1,14 @@
-import Database from 'bun:sqlite'
+import Database, { type SQLQueryBindings } from 'bun:sqlite'
 import type { CromoHandler } from 'cromo'
+import type { Hymn, Verse, VerseSequence } from '../../src/interfaces/db-schema'
 
 export const GET: CromoHandler = ({ params, responseInit }) => {
   const { id } = params
 
   const db = new Database('./src/database/himnario.db')
+
   const hymn = db
-    .query(
+    .query<Hymn, SQLQueryBindings>(
       'SELECT id, number, title, mp3Url, mp3UrlInstr, mp3Filename, bibleReference FROM hymn WHERE id = ?1',
     )
     .get(id)
@@ -16,7 +18,7 @@ export const GET: CromoHandler = ({ params, responseInit }) => {
   }
 
   let verses = db
-    .query(`
+    .query<Verse, SQLQueryBindings[]>(` 
       SELECT id, number
       FROM verse
       WHERE hymnId = ?1
@@ -24,8 +26,7 @@ export const GET: CromoHandler = ({ params, responseInit }) => {
     `)
     .all(id)
 
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  verses = verses.map((verse: any) => {
+  verses = verses.map((verse) => {
     const contents = db
       .query(`
         SELECT id, content
@@ -39,7 +40,7 @@ export const GET: CromoHandler = ({ params, responseInit }) => {
   })
 
   const sequence = db
-    .query(`
+    .query<VerseSequence, SQLQueryBindings[]>(`
       SELECT vs.id, vs.timestamp, vs.verseContentId, vc.verseId
       FROM verseSequence vs
       	INNER JOIN verseContent vc ON vc.id = vs.verseContentId
