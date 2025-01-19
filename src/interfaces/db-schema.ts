@@ -1,4 +1,4 @@
-export interface Hymn  {
+export interface Hymn {
   id: number
   number: number
   title: string

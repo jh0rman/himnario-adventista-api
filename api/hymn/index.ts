@@ -7,10 +7,12 @@ export const GET: CromoHandler = ({ query, responseInit }) => {
 
   const db = new Database('./src/database/himnario.db')
 
-  let hymns = db.query<Hymn, SQLQueryBindings[]>(
-    'SELECT id, number, title, mp3Url, mp3UrlInstr, mp3Filename, bibleReference FROM hymn',
-  ).all()
-  
+  let hymns = db
+    .query<Hymn, SQLQueryBindings[]>(
+      'SELECT id, number, title, mp3Url, mp3UrlInstr, mp3Filename, bibleReference FROM hymn',
+    )
+    .all()
+
   if (fields.includes('verses')) {
     hymns = hymns.map((hymn) => {
       let verses = db
@@ -21,7 +23,7 @@ export const GET: CromoHandler = ({ query, responseInit }) => {
           ORDER BY number ASC
         `)
         .all(hymn.id)
-  
+
       verses = verses.map((verse) => {
         const contents = db
           .query(`
@@ -31,14 +33,13 @@ export const GET: CromoHandler = ({ query, responseInit }) => {
             ORDER BY ordering ASC
           `)
           .all(verse.id)
-  
+
         return { ...verse, contents }
       })
-  
+
       return { ...hymn, verses }
     })
   }
-
 
   return Response.json(hymns, responseInit)
 }

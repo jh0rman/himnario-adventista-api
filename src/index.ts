@@ -6,6 +6,6 @@ const cromo = new Cromo()
 
 cromo.setMiddleware([cors, log])
 
-cromo.start(server => {
+cromo.start((server) => {
   console.info(`➜  Local:   ${server.url}`)
 })
