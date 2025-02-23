@@ -9,11 +9,14 @@ export const GET: CromoHandler = ({ query, responseInit }) => {
   const includeVerses = query['fields']?.split(',')?.includes('verses') ?? false
   const limit = query['limit'] ? parseInt(query['limit']) : null
   const page = query['page'] ? parseInt(query['page']) : null
+  const search = query['search'] ? `%${query['search']}%` : null
   const offset = limit && page ? (page - 1) * limit : 0
 
   const hymnsQuery = `
-    WITH paginated_hymns AS (
+    WITH filtered_hymns AS (
       SELECT * FROM hymn
+      WHERE 
+        (${search ? 'title LIKE $search OR number = $searchNumber' : '1 = 1'})
       ORDER BY number ASC
       ${limit ? 'LIMIT $limit OFFSET $offset' : ''}
     )
@@ -21,15 +24,18 @@ export const GET: CromoHandler = ({ query, responseInit }) => {
       h.id AS hymnId, h.number AS hymnNumber, h.title, h.mp3Url, h.mp3UrlInstr, h.mp3Filename, h.bibleReference,
       v.id AS verseId, v.number AS verseNumber,
       vc.id AS contentId, vc.content, vc.ordering AS contentOrder
-    FROM paginated_hymns h
+    FROM filtered_hymns h
     LEFT JOIN verse v ON v.hymnId = h.id
     LEFT JOIN verseContent vc ON vc.verseId = v.id
     ORDER BY h.number ASC, v.number ASC, vc.ordering ASC
   `
 
-  const results = db.query<HymnQueryResult, SQLQueryBindings[]>(hymnsQuery).all(
-    limit ? { $limit: limit, $offset: offset } : {}
-  )
+  const params: SQLQueryBindings = {
+    ...(search ? { $search: search, $searchNumber: parseInt(query['search']) || 0 } : {}),
+    ...(limit ? { $limit: limit, $offset: offset } : {}),
+  }
+
+  const results = db.query<HymnQueryResult, SQLQueryBindings[]>(hymnsQuery).all(params)
 
   const hymnsMap = new Map<number, Hymn>()
 
