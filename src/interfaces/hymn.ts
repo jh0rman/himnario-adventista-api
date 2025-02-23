@@ -6,11 +6,19 @@ export interface Hymn {
   mp3UrlInstr: string
   mp3Filename: string
   bibleReference: string
+  verses?: Verse[]
 }
 
 export interface Verse {
   id: number
   number: number
+  contents?: VerseContent[]
+}
+
+export interface VerseContent {
+  id: number
+  content: string
+  order: number
 }
 
 export interface VerseSequence {

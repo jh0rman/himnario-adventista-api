@@ -1,6 +1,6 @@
 import Database, { type SQLQueryBindings } from 'bun:sqlite'
 import type { CromoHandler } from 'cromo'
-import type { Hymn, Verse, VerseSequence } from '../../src/interfaces/db-schema'
+import type { Hymn, Verse, VerseContent, VerseSequence } from '../../src/interfaces/hymn'
 
 export const GET: CromoHandler = ({ params, responseInit }) => {
   const { id } = params
@@ -28,7 +28,7 @@ export const GET: CromoHandler = ({ params, responseInit }) => {
 
   verses = verses.map((verse) => {
     const contents = db
-      .query(`
+      .query<VerseContent, SQLQueryBindings[]>(`
         SELECT id, content
         FROM verseContent
         WHERE verseId = ?1
