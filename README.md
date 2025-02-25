@@ -20,6 +20,25 @@ La música está hosteada en [Google Drive](https://drive.google.com/drive/folde
 | --- | --- | --- |
 | ![GET](https://img.shields.io/badge/GET-0D96F6?style=for-the-badge) | [/hymn](https://sdah.my.to/hymn) | Devuelve un `Array` con todas las canciones. |
 
+### Parámetros opcionales
+
+Estos parámetros pueden usarse en `/hymn` para modificar la respuesta:
+
+- **`page`** y **`limit`**: se deben usar juntos para activar la paginación.
+  - `page`: número de la página.
+  - `limit`: cantidad de himnos por página.
+  
+  **Ejemplo:** `/hymn?page=1&limit=5` devuelve los primeros 5 himnos.
+
+- **`search`**: búsqueda por número o título del himno.
+  
+  **Ejemplo:** `/hymn?search=señor` devuelve todos los himnos que contengan "señor" en el título.
+
+- **`fields`**: selecciona qué campos incluir en la respuesta. Valores posibles:
+  - `verses`: incluye las estrofas y su contenido.
+  
+  **Ejemplo:** `/hymn?fields=verses` devuelve los himnos con sus estrofas.
+
 ### Responses
 
 | Código | Response |
