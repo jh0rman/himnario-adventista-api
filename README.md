@@ -43,12 +43,13 @@ La música está hosteada en [Google Drive](https://drive.google.com/drive/folde
 
 ```typescript
 interface Hymn = {
-  id:           number  // ID de la canción
-  number:       number  // número de la canción
-  title:        string  // título de la canción
-  mp3Url:       string  // URL del archivo mp3
-  mp3UrlInstr:  string  // URL del archivo mp3 con la pista instrumental
-  mp3Filename:  string  // nombre del archivo mp3
+  id:             number  // ID de la canción
+  number:         number  // número de la canción
+  title:          string  // título de la canción
+  mp3Url:         string  // URL del archivo mp3
+  mp3UrlInstr:    string  // URL del archivo mp3 con la pista instrumental
+  mp3Filename:    string  // nombre del archivo mp3
+  bibleReference: string // referencia bíblica asociada al himno
 }
 ```
 
@@ -60,6 +61,7 @@ interface HymnSequence =  {
   mp3Url:           string  // URL del archivo mp3
   mp3UrlInstr:      string  // URL del archivo mp3 con la pista instrumental
   mp3Filename:      string  // nombre del archivo mp3
+  bibleReference:   string // referencia bíblica asociada al himno
   verses: {
     id:             number  // ID de la estrofa
     number:         number  // número de la estrofa (0 si es el coro)
