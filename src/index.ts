@@ -11,13 +11,13 @@ export default {
     }
 
     if (path === '/hymn') {
-      const { results } = await env.DB.prepare('SELECT id, number, title, mp3Url, mp3UrlInstr, mp3Filename FROM hymn').all()
+      const { results } = await env.DB.prepare('SELECT id, number, title, mp3Url, mp3UrlInstr, mp3Filename, bibleReference FROM hymn').all()
       return Response.json(results, { headers })
     } else if (path.startsWith("/hymn/")) {
       const id = path.split('/')[2]
   
       const hymn = await env.DB.prepare(`
-        SELECT id, number, title, mp3Url, mp3UrlInstr, mp3Filename
+        SELECT id, number, title, mp3Url, mp3UrlInstr, mp3Filename, bibleReference
         FROM hymn
         WHERE id = ?1
       `)
