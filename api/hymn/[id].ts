@@ -7,7 +7,7 @@ export const GET: CromoHandler = ({ params, responseInit }) => {
   const db = new Database('./src/database/himnario.db')
   const hymn = db
     .query(
-      'SELECT id, number, title, mp3Url, mp3UrlInstr, mp3Filename FROM hymn WHERE id = ?1',
+      'SELECT id, number, title, mp3Url, mp3UrlInstr, mp3Filename, bibleReference FROM hymn WHERE id = ?1',
     )
     .get(id)
 
