@@ -4,6 +4,7 @@ export default {
   async fetch(request, env, _ctx): Promise<Response> {
     const url = new URL(request.url)
     const path = url.pathname
+    const fields = url.searchParams.get('fields')?.split(',') ?? []
 
     const headers = {
       ...cors,
@@ -11,8 +12,64 @@ export default {
     }
 
     if (path === '/hymn') {
-      const { results } = await env.DB.prepare('SELECT id, number, title, mp3Url, mp3UrlInstr, mp3Filename, bibleReference FROM hymn').all()
-      return Response.json(results, { headers })
+      const includeVerses = fields.includes('verses')
+
+      let query = `
+        SELECT 
+          h.id AS hymnId, h.number AS hymnNumber, h.title, h.mp3Url, h.mp3UrlInstr, h.mp3Filename, h.bibleReference
+          ${includeVerses ? `,
+          v.id AS verseId, v.number AS verseNumber, 
+          vc.id AS contentId, vc.content
+          ` : ''}
+        FROM hymn h
+          ${includeVerses ? `
+          LEFT JOIN verse v ON v.hymnId = h.id
+          LEFT JOIN verseContent vc ON vc.verseId = v.id
+          ` : ''}
+        ORDER BY h.id, v.number, vc.ordering
+      `
+
+      const { results } = await env.DB.prepare(query).all()
+
+      const hymnsMap = new Map()
+
+      results.forEach(row => {
+        if (!hymnsMap.has(row.hymnId)) {
+          hymnsMap.set(row.hymnId, {
+            id: row.hymnId,
+            number: row.hymnNumber,
+            title: row.title,
+            mp3Url: row.mp3Url,
+            mp3UrlInstr: row.mp3UrlInstr,
+            mp3Filename: row.mp3Filename,
+            bibleReference: row.bibleReference,
+            verses: includeVerses ? [] : undefined
+          })
+        }
+
+        if (includeVerses && row.verseId) {
+          let hymn = hymnsMap.get(row.hymnId)
+          let verse = hymn.verses.find(v => v.id === row.verseId)
+
+          if (!verse) {
+            verse = {
+              id: row.verseId,
+              number: row.verseNumber,
+              contents: []
+            }
+            hymn.verses.push(verse)
+          }
+
+          if (row.contentId && row.content) {
+            verse.contents.push({
+              id: row.contentId,
+              content: row.content
+            })
+          }
+        }
+      })
+
+      return Response.json([...hymnsMap.values()], { headers })
     } else if (path.startsWith("/hymn/")) {
       const id = path.split('/')[2]
   
