@@ -26,7 +26,6 @@ export default {
           LEFT JOIN verse v ON v.hymnId = h.id
           LEFT JOIN verseContent vc ON vc.verseId = v.id
           ` : ''}
-        ORDER BY h.id, v.number, vc.ordering
       `
 
       const { results } = await env.DB.prepare(query).all()
