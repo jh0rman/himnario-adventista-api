@@ -6,7 +6,7 @@ Es una API que permite obtener la letra y la música (instrumental y cantado) de
 
 ### ¿Cómo usarla?
 
-La API se encuentra en la siguiente dirección: <https://sdah.my.to/hymn>.
+La API se encuentra en la siguiente dirección: <https://himnario-api.qhar.in/hymn>.
 
 > ⚠️ Esta API está en constante desarrollo y puede cambiar en cualquier momento.
 
@@ -18,7 +18,7 @@ La música está hosteada en [Google Drive](https://drive.google.com/drive/folde
 
 | Método | Endpoint | Descripción |
 | --- | --- | --- |
-| ![GET](https://img.shields.io/badge/GET-0D96F6?style=for-the-badge) | [/hymn](https://sdah.my.to/hymn) | Devuelve un `Array` con todas las canciones. |
+| ![GET](https://img.shields.io/badge/GET-0D96F6?style=for-the-badge) | [/hymn](https://himnario-api.qhar.in/hymn) | Devuelve un `Array` con todas las canciones. |
 
 ### Parámetros opcionales
 
@@ -49,7 +49,7 @@ Estos parámetros pueden usarse en `/hymn` para modificar la respuesta:
 
 | Método | Endpoint | Descripción |
 | --- | --- | --- |
-| ![GET](https://img.shields.io/badge/GET-0D96F6?style=for-the-badge) | [/hymn/:number](https://sdah.my.to/hymn/1) | Devuelve el contenido de la canción y la secuencia de estrofas. |
+| ![GET](https://img.shields.io/badge/GET-0D96F6?style=for-the-badge) | [/hymn/:number](https://himnario-api.qhar.in/hymn/1) | Devuelve el contenido de la canción y la secuencia de estrofas. |
 
 ### Responses
 
